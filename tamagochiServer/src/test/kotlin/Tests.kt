@@ -68,12 +68,12 @@ class Tests {
 
     @Test
     fun getCommandTestMethodStackTest() {
-
+        TODO("Working on it")
     }
 
     @Test
     fun getCommandTestMethodQueueTest() {
-
+        TODO("working on it")
     }
 
 }
