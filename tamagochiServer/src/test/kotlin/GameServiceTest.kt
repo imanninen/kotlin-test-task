@@ -24,11 +24,39 @@ internal val commandStorageTestVar = TestVariable(
     isInPrimaryConstructor = false,
 )
 
+internal val addCommandTestMethod = TestMethod(
+    name = "addCommand",
+    returnType = TestKotlinType("Boolean"),
+    returnTypeJava = "boolean",
+    arguments = listOf(
+        TestVariable(
+            name = "command",
+            javaType = "int"
+        ),
+    ),
+    visibility = Visibility.PUBLIC
+)
+
+internal val getCommandTestMethod = TestMethod(
+    name = "getCommand",
+    returnType = TestKotlinType("Command", isNullable = true, abbreviation = "Command?"),
+    returnTypeJava = "Command",
+    arguments = listOf(
+        TestVariable(
+            name = "mode",
+            javaType = "String"
+        )
+    ),
+    visibility = Visibility.PUBLIC,
+
+)
+
 internal val gameServiceTest = TestClass(
     "GameService",
     classPackage = "org.jetbrains.kotlin.test.task.tamagotchi.game",
     customMethods = listOf(
-    // TODO("watch how it implemented in another course!")
+        addCommandTestMethod,
+        getCommandTestMethod,
     ),
     declaredFields = listOf(
         commandStorageTestVar,
@@ -45,30 +73,6 @@ internal val gameServiceCompanionTest = TestClass(
     "org.jetbrains.kotlin.test.task.tamagotchi.game",
 )
 
-internal val addCommandTestMethod = TestMethod(
-    name = "addCommand",
-    returnType = TestKotlinType("Boolean"),
-    returnTypeJava = "boolean",
-    arguments = listOf(
-        TestVariable(
-            name = "command",
-            javaType = "int"
-        ),
-    ),
-    visibility = Visibility.PUBLIC
-)
 
-internal val getCommandTestMethod = TestMethod(
-    name = "getCommand",
-    returnType = TestKotlinType("Command?"),
-    returnTypeJava = "Command",
-    arguments = listOf(
-        TestVariable(
-        name = "mode",
-        javaType = "String"
-        )
-    ),
-    visibility = Visibility.PUBLIC
-)
 
 

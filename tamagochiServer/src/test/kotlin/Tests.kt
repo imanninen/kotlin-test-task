@@ -11,18 +11,32 @@ import java.util.LinkedList
 class Tests {
     companion object {
         private val command2 = 2
-        private val expectedCommandStorage2 = LinkedList(listOf(Command.Clean))
+        private val expectedCommandStorage2 = Command.Clean
         private val command5 = 5
-        private val expectedCommandStorage5 = LinkedList(listOf(Command.Sleep))
+        private val expectedCommandStorage5 = Command.Sleep
         private val command8 = 8
-        private val expectedCommandStorage8 = LinkedList(listOf(Command.Eat))
+        private val expectedCommandStorage8 = Command.Eat
+        private const val queue = "\"Queue\""
+        private const val stack = "\"Stack\""
 
         @JvmStatic
         fun addCommandMethodTestData() = listOf(
             // initial, expected
-            Arguments.of(command2, expectedCommandStorage2),
-            Arguments.of(command5, expectedCommandStorage5),
-            Arguments.of(command8, expectedCommandStorage8),
+            Arguments.of(command2, LinkedList(listOf(expectedCommandStorage2))),
+            Arguments.of(command5, LinkedList(listOf(expectedCommandStorage5))),
+            Arguments.of(command8, LinkedList(listOf(expectedCommandStorage8))),
+        )
+        @JvmStatic
+        fun getCommandMethodTestData() = listOf(
+            // mode, testCommandStorage, expectedReturn, expectedCommandStorage
+            Arguments.of(queue, LinkedList(listOf(Command.Clean, Command.Play, Command.Eat)), Command.Clean,
+                LinkedList(listOf(Command.Play, Command.Eat))),
+            Arguments.of(stack, LinkedList(listOf(Command.Clean, Command.Play, Command.Eat)), Command.Eat,
+                LinkedList(listOf(Command.Clean, Command.Play))),
+            Arguments.of(stack, LinkedList(listOf(Command.Clean)), Command.Clean, LinkedList<Command>()),
+            Arguments.of(queue, LinkedList(listOf(Command.Clean)), Command.Clean, LinkedList<Command>()),
+//            Arguments.of(stack, LinkedList<Command>(), null, LinkedList<Command>()),
+//            Arguments.of(queue, LinkedList<Command>(), null, LinkedList<Command>())
         )
     }
     @Test // TODO(probably to complex)
@@ -96,6 +110,32 @@ class Tests {
         {"\"Something went wrong in getCommand method!"}
     }
 
+    /*
+    * I thought that previous tests are not that good, so I decided and implemented this one.
+    * But it has one problem and I don't know how to fix it: this test throws strange exception when it gets null from
+    * invokeMethodWithArgs() despite that I specify my method as nullable.
+    * Anyway I enjoyed completing this task, so thank you. I wish I get a job :))
+    */
+    @ParameterizedTest
+    @MethodSource("getCommandMethodTestData")
+    fun getMethodTestMain(mode: String, testCommandStorage: LinkedList<Command>,
+                          expectedReturn: Command?, expectedCommandStorage: LinkedList<Command>) {
+        val invokeData = TestMethodInvokeData(gameServiceTest, getCommandTestMethod)
+        var field = invokeData.clazz.declaredFields.find { it.name == commandStorageTestVar.name }
+            ?: error("No such field! ${commandStorageTestVar.name}")
+        field.isAccessible = true
+        field.set(invokeData.instance, testCommandStorage)
 
-
+        val methodReturn = gameServiceTest.invokeMethodWithArgs(
+            args = arrayOf(mode),
+            invokeData = invokeData,
+            isPrivate = false,
+        )
+        assertEquals(expectedReturn, methodReturn) {"Try to call ${addCommandTestMethod.name} method on a $mode"}
+        field = invokeData.clazz.declaredFields.find { it.name == commandStorageTestVar.name }
+            ?: error("No such field ${commandStorageTestVar.name}")
+        field.isAccessible = true
+        val currentStorage = field.get(invokeData.instance)
+        assertEquals(expectedCommandStorage, currentStorage) {"You are not right!"}
+    }
 }

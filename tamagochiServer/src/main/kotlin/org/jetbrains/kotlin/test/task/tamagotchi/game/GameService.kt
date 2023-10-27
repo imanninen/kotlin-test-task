@@ -15,11 +15,16 @@ class GameService {
 
     val copyOfCommandStorage: LinkedList<Command>
         get() = commandStorage
-    fun getCommand(mode: String): Command? =
+    fun getCommand(mode: String): Command? {
         when (parseMode(mode)) {
-            Mode.Queue -> commandStorage.popFront()
-            Mode.Stack -> commandStorage.popBack()
+            Mode.Queue -> return commandStorage.popFront()
+            Mode.Stack -> {
+                val gg =commandStorage.popBack()
+                println(gg)
+                return gg
+            }
         }
+    }
 
     private fun parseMode(mode: String): Mode = when (mode) {
         "\"Queue\"" -> Mode.Queue
