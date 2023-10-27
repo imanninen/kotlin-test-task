@@ -1,4 +1,5 @@
 import org.jetbrains.academy.test.system.core.models.method.TestMethodInvokeData
+import org.jetbrains.kotlin.test.task.tamagotchi.game.GameService
 import org.jetbrains.kotlin.test.task.tamagotchi.models.Command
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
@@ -49,6 +50,7 @@ class Tests {
             assertEquals(value, currentValue) {"Initial value of $name is wrong!"}
         }
     }
+
     @ParameterizedTest
     @MethodSource("addCommandMethodTestData")
     fun addCommandTestMethodTest(inputCommand: Int, expected: LinkedList<Command>) {
@@ -63,17 +65,37 @@ class Tests {
             ?: error("No such field ${commandStorageTestVar.name}!")
         field.isAccessible = true
         val currentValue = field.get(invokeData.instance)
-        assertEquals(expected, currentValue) { "Try to call the ${addCommandTestMethod.name} on an $inputCommand" }
+        assertEquals(expected, currentValue) { "Try to call the ${addCommandTestMethod.name} method on a $inputCommand" }
     }
 
     @Test
     fun getCommandTestMethodStackTest() {
-        TODO("Working on it")
+        val service = GameService()
+        var result = service.getCommand("\"Stack\"")
+        assertEquals(null, result) {"Try to call getCommand method on an empty commandStorage with stack mode"}
+        service.addCommand(1)
+        service.addCommand(2)
+        service.addCommand(3)
+        result = service.getCommand("\"Stack\"")
+        assertEquals(Command.Play, result) {"Something went wrong in getCommandFunction! Should be $result"}
+        assertEquals(LinkedList(listOf(Command.Sleep, Command.Clean)), service.copyOfCommandStorage)
+        {"\"Something went wrong in getCommand method!"}
     }
 
     @Test
     fun getCommandTestMethodQueueTest() {
-        TODO("working on it")
+        val service = GameService()
+        var result = service.getCommand("\"Queue\"")
+        assertEquals(null, result) {"Try to call getCommand method on an empty commandStorage with stack mode"}
+        service.addCommand(1)
+        service.addCommand(2)
+        service.addCommand(3)
+        result = service.getCommand("\"Queue\"")
+        assertEquals(Command.Sleep, result) {"Something went wrong in getCommandFunction! Should be $result"}
+        assertEquals(LinkedList(listOf(Command.Clean, Command.Play)), service.copyOfCommandStorage)
+        {"\"Something went wrong in getCommand method!"}
     }
+
+
 
 }

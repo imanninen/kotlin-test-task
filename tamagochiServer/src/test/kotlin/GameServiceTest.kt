@@ -58,6 +58,17 @@ internal val addCommandTestMethod = TestMethod(
     visibility = Visibility.PUBLIC
 )
 
-
+internal val getCommandTestMethod = TestMethod(
+    name = "getCommand",
+    returnType = TestKotlinType("Command?"),
+    returnTypeJava = "Command",
+    arguments = listOf(
+        TestVariable(
+        name = "mode",
+        javaType = "String"
+        )
+    ),
+    visibility = Visibility.PUBLIC
+)
 
 
