@@ -1,5 +1,3 @@
-@file:Suppress("UnusedParameter")
-
 package org.jetbrains.kotlin.test.task.tamagotchi.game
 
 import org.jetbrains.kotlin.test.task.tamagotchi.models.Command

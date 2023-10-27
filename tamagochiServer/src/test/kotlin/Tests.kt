@@ -1,3 +1,4 @@
+@file:Suppress("UnreachableCode")
 import org.jetbrains.academy.test.system.core.models.method.TestMethodInvokeData
 import org.jetbrains.kotlin.test.task.tamagotchi.game.GameService
 import org.jetbrains.kotlin.test.task.tamagotchi.models.Command
@@ -10,11 +11,11 @@ import java.util.LinkedList
 
 class Tests {
     companion object {
-        private val command2 = 2
+        private const val command2 = 2
         private val expectedCommandStorage2 = Command.Clean
-        private val command5 = 5
+        private const val command5 = 5
         private val expectedCommandStorage5 = Command.Sleep
-        private val command8 = 8
+        private const val command8 = 8
         private val expectedCommandStorage8 = Command.Eat
         private const val queue = "\"Queue\""
         private const val stack = "\"Stack\""
@@ -39,7 +40,7 @@ class Tests {
 //            Arguments.of(queue, LinkedList<Command>(), null, LinkedList<Command>())
         )
     }
-    @Test // TODO(probably to complex)
+    @Test
     fun commandFieldTest() {
         val clazz = gameServiceTest.checkBaseDefinition()
         val instance = clazz.getConstructor().newInstance()
